@@ -41,7 +41,6 @@ def create_app():
     # these load functions with web interface
     app.register_blueprint(simple_pages)
     app.register_blueprint(auth)
-
     # these load functionality without a web interface
     app.register_blueprint(log_con)
     app.register_blueprint(error_handlers)
@@ -51,7 +50,6 @@ def create_app():
     app.cli.add_command(create_log_folder)
     db.init_app(app)
     # Run once at startup:
-
     return app
 
 
