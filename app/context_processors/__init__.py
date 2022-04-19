@@ -1,11 +1,11 @@
 from os import getenv
 import datetime
-from app.auth.forms import login_form
+from app.auth.forms import LoginForm
 
 
 def utility_text_processors():
     message = "hello world"
-    form = login_form()
+    form = LoginForm()
 
     def deployment_environment():
         return getenv('FLASK_ENV', None)
