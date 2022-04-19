@@ -48,9 +48,9 @@ LOGGING_CONFIG = {
             'format': '%(asctime)s [%(levelname)s] %(name)s: %(message)s'
         },
         'RequestFormatter': {
-            '()': 'app.logging_config.log_formatters.RequestFormatter',
+            '()': 'app.logging_config.log_formatter.RequestFormatter',
             'format': '[%(asctime)s] [%(process)d] %(remote_addr)s requested %(url)s'
-                        '%(levelname)s in %(module)s: %(message)s'
+                      '%(levelname)s in %(module)s: %(message)s'
         }
     },
     'handlers': {
@@ -105,12 +105,12 @@ LOGGING_CONFIG = {
     },
     'loggers': {
         '': {  # root logger
-            'handlers': ['default','file.handler'],
+            'handlers': ['default', 'file.handler'],
             'level': 'DEBUG',
             'propagate': True
         },
         '__main__': {  # if __name__ == '__main__'
-            'handlers': ['default','file.handler'],
+            'handlers': ['default', 'file.handler'],
             'level': 'DEBUG',
             'propagate': True
         },

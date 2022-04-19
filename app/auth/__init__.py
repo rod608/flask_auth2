@@ -3,7 +3,7 @@ from flask_login import login_user, login_required, logout_user, current_user
 from werkzeug.security import generate_password_hash
 
 from app.auth.decorators import admin_required
-from app.auth.forms import login_form, register_form, profile_form, security_form, user_edit_form
+from app.auth.forms import LoginForm, register_form, ProfileForm, SecurityForm, UserEditForm
 from app.db import db
 from app.db.models import User
 
@@ -32,9 +32,10 @@ def register():
             return redirect(url_for('auth.login'), 302)
     return render_template('register.html', form=form)
 
+
 @auth.route('/login', methods=['POST', 'GET'])
 def login():
-    form = login_form()
+    form = LoginForm()
     if current_user.is_authenticated:
         return redirect(url_for('auth.dashboard'))
     if form.validate_on_submit():
@@ -51,6 +52,7 @@ def login():
             return redirect(url_for('auth.dashboard'))
     return render_template('login.html', form=form)
 
+
 @auth.route("/logout")
 @login_required
 def logout():
@@ -63,7 +65,6 @@ def logout():
     return redirect(url_for('auth.login'))
 
 
-
 @auth.route('/dashboard')
 @login_required
 def dashboard():
@@ -73,7 +74,7 @@ def dashboard():
 @auth.route('/profile', methods=['POST', 'GET'])
 def edit_profile():
     user = User.query.get(current_user.get_id())
-    form = profile_form(obj=user)
+    form = ProfileForm(obj=user)
     if form.validate_on_submit():
         user.about = form.about.data
         db.session.add(current_user)
@@ -86,7 +87,7 @@ def edit_profile():
 @auth.route('/account', methods=['POST', 'GET'])
 def edit_account():
     user = User.query.get(current_user.get_id())
-    form = security_form(obj=user)
+    form = SecurityForm(obj=user)
     if form.validate_on_submit():
         user.email = form.email.data
         user.password = form.password.data
@@ -96,8 +97,8 @@ def edit_account():
         return redirect(url_for('auth.dashboard'))
     return render_template('manage_account.html', form=form)
 
-#You should probably move these to a new Blueprint to clean this up.  These functions below are for user management
 
+# You should probably move these to a new Blueprint to clean this up.  These functions below are for user management
 @auth.route('/users')
 @login_required
 @admin_required
@@ -126,7 +127,7 @@ def retrieve_user(user_id):
 @login_required
 def edit_user(user_id):
     user = User.query.get(user_id)
-    form = user_edit_form(obj=user)
+    form = UserEditForm(obj=user)
     if form.validate_on_submit():
         user.about = form.about.data
         user.is_admin = int(form.is_admin.data)
