@@ -39,9 +39,12 @@ def create_app():
     csrf = CSRFProtect(app)
     # https://bootstrap-flask.readthedocs.io/en/stable/
     bootstrap = Bootstrap5(app)
-    app.register_blueprint(log_con)
+    # these load functions with web interface
     app.register_blueprint(simple_pages)
     app.register_blueprint(auth)
+
+    # these load functionality without a web interface
+    app.register_blueprint(log_con)
     app.register_blueprint(error_handlers)
     app.context_processor(utility_text_processors)
     # add command function to cli commands

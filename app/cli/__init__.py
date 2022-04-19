@@ -2,6 +2,10 @@ import os
 
 import click
 from flask.cli import with_appcontext
+import os
+
+import click
+from flask.cli import with_appcontext
 from app.db import db
 
 
@@ -11,10 +15,10 @@ def create_database():
     # get root directory of project
     root = os.path.dirname(os.path.abspath(__file__))
     # set the name of the apps log folder to logs
-    logdir = os.path.join(root, '../../database')
+    dbdir = os.path.join(root, '../../database')
     # make a directory if it doesn't exist
-    if not os.path.exists(logdir):
-        os.mkdir(logdir)
+    if not os.path.exists(dbdir):
+        os.mkdir(dbdir)
     db.create_all()
 
 
@@ -28,5 +32,3 @@ def create_log_folder():
     # make a directory if it doesn't exist
     if not os.path.exists(logdir):
         os.mkdir(logdir)
-    # set name of the log file
-    log_file = os.path.join(logdir, 'info.log')
