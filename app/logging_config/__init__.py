@@ -37,7 +37,7 @@ def configure_logging():
     log = logging.getLogger("myApp")
     log.info("My App Logger")
     log = logging.getLogger("myerrors")
-    log.info("THis broke")
+    log.info("Debug-level log function reached: The website is broken.")
 
 
 LOGGING_CONFIG = {
@@ -134,6 +134,11 @@ LOGGING_CONFIG = {
             'level': 'DEBUG',
             'propagate': False
         },
+        'requests': {  # if __name__ == '__main__'
+            'handlers': ['file.handler.request'],
+            'level': 'DEBUG',
+            'propagate': False
+        }
 
     }
 }
