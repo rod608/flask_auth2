@@ -12,8 +12,12 @@ log_con = flask.Blueprint('log_con', __name__)
 @log_con.before_app_request
 def before_request_logging():
     current_app.logger.info("Before Request")
+
     log = logging.getLogger("myApp")
     log.info("My App Logger")
+
+    log2 = logging.getLogger("request")
+    log2.info("Before Request")
 
 
 @log_con.after_app_request
@@ -28,16 +32,25 @@ def after_request_logging(response):
 
     log = logging.getLogger("myApp")
     log.info("My App Logger")
+
+    log2 = logging.getLogger("request")
+    log2.info("After Request")
+
     return response
 
 
 @log_con.before_app_first_request
 def configure_logging():
     logging.config.dictConfig(LOGGING_CONFIG)
+
     log = logging.getLogger("myApp")
     log.info("My App Logger")
-    log = logging.getLogger("myerrors")
-    log.info("Debug-level log function reached: The website is broken.")
+
+    log2 = logging.getLogger("myerrors")
+    log2.info("Debug-level log function reached: The website is broken.")
+
+    log3 = logging.getLogger("request")
+    log3.info("Request Logger")
 
 
 LOGGING_CONFIG = {
@@ -134,7 +147,7 @@ LOGGING_CONFIG = {
             'level': 'DEBUG',
             'propagate': False
         },
-        'requests': {  # if __name__ == '__main__'
+        'request': {  # if __name__ == '__main__'
             'handlers': ['file.handler.request'],
             'level': 'DEBUG',
             'propagate': False
