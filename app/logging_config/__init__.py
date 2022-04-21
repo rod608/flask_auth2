@@ -50,7 +50,10 @@ def configure_logging():
     log2.info("Debug-level log function reached: The website is broken.")
 
     log3 = logging.getLogger("request")
-    log3.info("Request Logger")
+    log3.info("Before 1st Request")
+
+    log4 = logging.getLogger("debug")
+    log4.info("Debug Mode Activated")
 
 
 LOGGING_CONFIG = {
@@ -98,6 +101,13 @@ LOGGING_CONFIG = {
             'class': 'logging.handlers.RotatingFileHandler',
             'formatter': 'standard',
             'filename': 'app/logs/errors.log',
+            'maxBytes': 10000000,
+            'backupCount': 5,
+        },
+        'file.handler.debug': {
+            'class': 'logging.handlers.RotatingFileHandler',
+            'formatter': 'standard',
+            'filename': 'app/logs/debug.log',
             'maxBytes': 10000000,
             'backupCount': 5,
         },
@@ -151,7 +161,11 @@ LOGGING_CONFIG = {
             'handlers': ['file.handler.request'],
             'level': 'DEBUG',
             'propagate': False
+        },
+        'debug': {  # if __name__ == '__main__'
+            'handlers': ['file.handler.debug'],
+            'level': 'DEBUG',
+            'propagate': False
         }
-
     }
 }

@@ -14,3 +14,10 @@ def test_errors_log_exists():
     root = os.path.dirname(os.path.abspath(__file__))
     errorlog = os.path.join(root, '../app/logs/errors.log')
     assert os.path.exists(errorlog) == True
+
+
+def test_debug_log_exists():
+    """This checks for the debug log"""
+    root = os.path.dirname(os.path.abspath(__file__))
+    debuglog = os.path.join(root, '../app/logs/debug.log')
+    assert os.path.exists(debuglog) == True
