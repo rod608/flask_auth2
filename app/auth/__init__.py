@@ -3,7 +3,7 @@ from flask_login import login_user, login_required, logout_user, current_user
 from werkzeug.security import generate_password_hash
 
 from app.auth.decorators import admin_required
-from app.auth.forms import LoginForm, register_form, ProfileForm, SecurityForm, UserEditForm
+from app.auth.forms import login_form, register_form, profile_form, security_form, user_edit_form
 from app.db import db
 from app.db.models import User
 
@@ -38,7 +38,7 @@ def register():
 
 @auth.route('/login', methods=['POST', 'GET'])
 def login():
-    form = LoginForm()
+    form = login_form()
     if current_user.is_authenticated:
         return redirect(url_for('auth.dashboard'))
     if form.validate_on_submit():
@@ -77,7 +77,7 @@ def dashboard():
 @auth.route('/profile', methods=['POST', 'GET'])
 def edit_profile():
     user = User.query.get(current_user.get_id())
-    form = ProfileForm(obj=user)
+    form = profile_form(obj=user)
     if form.validate_on_submit():
         user.about = form.about.data
         db.session.add(current_user)
@@ -90,7 +90,7 @@ def edit_profile():
 @auth.route('/account', methods=['POST', 'GET'])
 def edit_account():
     user = User.query.get(current_user.get_id())
-    form = SecurityForm(obj=user)
+    form = security_form(obj=user)
     if form.validate_on_submit():
         user.email = form.email.data
         user.password = form.password.data
