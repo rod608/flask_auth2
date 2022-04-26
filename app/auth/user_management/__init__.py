@@ -3,7 +3,7 @@ from flask_login import login_required, current_user
 from werkzeug.security import generate_password_hash
 
 from app.auth.decorators import admin_required
-from app.auth.forms import register_form, UserEditForm
+from app.auth.forms import register_form, user_edit_form
 from app.db import db
 from app.db.models import User
 
@@ -38,7 +38,7 @@ def retrieve_user(user_id):
 @login_required
 def edit_user(user_id):
     user = User.query.get(user_id)
-    form = UserEditForm(obj=user)
+    form = user_edit_form(obj=user)
     if form.validate_on_submit():
         user.about = form.about.data
         user.is_admin = int(form.is_admin.data)

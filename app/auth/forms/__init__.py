@@ -3,7 +3,7 @@ from wtforms import validators
 from wtforms.fields import *
 
 
-class LoginForm(FlaskForm):
+class login_form(FlaskForm):
     email = EmailField('Email Address', [
         validators.DataRequired(),
     ])
@@ -30,21 +30,21 @@ class register_form(FlaskForm):
     submit = SubmitField()
 
 
-class ProfileForm(FlaskForm):
+class profile_form(FlaskForm):
     about = TextAreaField('About', [validators.length(min=6, max=300)],
                           description="Please add information about yourself")
 
     submit = SubmitField()
 
 
-class UserEditForm(FlaskForm):
+class user_edit_form(FlaskForm):
     about = TextAreaField('About', [validators.length(min=6, max=300)],
                           description="Please add information about yourself")
     is_admin = BooleanField('Admin', render_kw={'value':'1'})
     submit = SubmitField()
 
 
-class SecurityForm(FlaskForm):
+class security_form(FlaskForm):
     email = EmailField('Email Address', [
         validators.DataRequired(),
 

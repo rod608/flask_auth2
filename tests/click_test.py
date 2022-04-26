@@ -16,7 +16,7 @@ def test_create_log_folder():
     # make a directory if it doesn't exist
     if not os.path.exists(logdir):
         os.mkdir(logdir)
-    assert os.path.exists(logdir) == True
+    assert os.path.exists(logdir)
 
 
 def test_create_database():
@@ -28,4 +28,4 @@ def test_create_database():
     # make a directory if it doesn't exist
     if not os.path.exists(dbdir):
         os.mkdir(dbdir)
-    assert os.path.exists(dbdir) == True
+    assert os.path.exists(dbdir)
