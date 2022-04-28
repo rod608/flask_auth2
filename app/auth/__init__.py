@@ -10,6 +10,7 @@ from app.db.models import User
 from app.auth.user_management import user_management
 
 auth = Blueprint('auth', __name__, template_folder='templates')
+# custom blueprint
 auth.register_blueprint(user_management, url_prefix="")
 
 
