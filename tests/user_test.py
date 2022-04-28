@@ -10,6 +10,9 @@ def test_adding_user(application):
     with application.app_context():
         user_og_count = db.session.query(User).count()
         song_og_count = db.session.query(Song).count()
+        # assert db.session.query(User).count() == 0
+        # assert db.session.query(Song).count() == 0
+
         # showing how to add a record
         # create a record
         user = User('keith@webizly.com', 'testtest')
