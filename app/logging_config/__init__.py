@@ -1,59 +1,58 @@
 import logging
+import os
 from logging.config import dictConfig
 
 import flask
 from flask import request, current_app
 
-from app.logging_config.log_formatter import RequestFormatter
+from app.logging_config.log_formatters import RequestFormatter
+from app import config
 
 log_con = flask.Blueprint('log_con', __name__)
+
+
+@log_con.before_app_first_request
+def setup_logs():
+    # set the name of the apps log folder to logs
+    logdir = config.Config.LOG_DIR
+    # make a directory if it doesn't exist
+    if not os.path.exists(logdir):
+        os.mkdir(logdir)
+    logging.config.dictConfig(LOGGING_CONFIG)
+    # Log Setup 4 myerrors
+    current_app.logger.info("Debug-level log function reached: myerrors logger activated.")
+    log = logging.getLogger("myerrors")
+    log.info("Debug-level log function reached: myerrors logger activated. ")
 
 
 @log_con.before_app_request
 def before_request_logging():
     current_app.logger.info("Before Request")
 
-    log = logging.getLogger("myApp")
-    log.info("My App Logger")
+    log = logging.getLogger("request")
+    log.info("Before Request")
 
-    log2 = logging.getLogger("request")
-    log2.info("Before Request")
+    log2 = logging.getLogger("myerrors")
+    log2.info("Debug-level log function reached: myerrors logger activated. ")
 
 
 @log_con.after_app_request
 def after_request_logging(response):
+    # Request Logger Setup
+    current_app.logger.info("After Request")
+    log = logging.getLogger("request")
+
     if request.path == '/favicon.ico':
+        log.info("After Favicon Request")
         return response
     elif request.path.startswith('/static'):
+        log.info("After Static Request")
         return response
     elif request.path.startswith('/bootstrap'):
+        log.info("After Bootstrap Request")
         return response
-    current_app.logger.info("After Request")
-
-    log = logging.getLogger("myApp")
-    log.info("My App Logger")
-
-    log2 = logging.getLogger("request")
-    log2.info("After Request")
-
+    log.info("After General Request")
     return response
-
-
-@log_con.before_app_first_request
-def configure_logging():
-    logging.config.dictConfig(LOGGING_CONFIG)
-
-    log = logging.getLogger("myApp")
-    log.info("My App Logger")
-
-    log2 = logging.getLogger("myerrors")
-    log2.info("Debug-level log function reached: The website is broken.")
-
-    log3 = logging.getLogger("request")
-    log3.info("Before 1st Request")
-
-    log4 = logging.getLogger("debug")
-    log4.info("Debug Mode Activated")
 
 
 LOGGING_CONFIG = {
@@ -63,11 +62,7 @@ LOGGING_CONFIG = {
         'standard': {
             'format': '%(asctime)s [%(levelname)s] %(name)s: %(message)s'
         },
-        'RequestFormatter': {
-            '()': 'app.logging_config.log_formatter.RequestFormatter',
-            'format': '[%(asctime)s] [%(process)d] %(remote_addr)s requested %(url)s'
-                      '%(levelname)s in %(module)s: %(message)s'
-        }
+
     },
     'handlers': {
         'default': {
@@ -79,49 +74,42 @@ LOGGING_CONFIG = {
         'file.handler': {
             'class': 'logging.handlers.RotatingFileHandler',
             'formatter': 'standard',
-            'filename': 'app/logs/flask.log',
+            'filename': os.path.join(config.Config.LOG_DIR, 'handler.log'),
             'maxBytes': 10000000,
             'backupCount': 5,
         },
         'file.handler.myapp': {
             'class': 'logging.handlers.RotatingFileHandler',
             'formatter': 'standard',
-            'filename': 'app/logs/myapp.log',
+            'filename': os.path.join(config.Config.LOG_DIR, 'myapp.log'),
             'maxBytes': 10000000,
             'backupCount': 5,
         },
         'file.handler.request': {
             'class': 'logging.handlers.RotatingFileHandler',
-            'formatter': 'RequestFormatter',
-            'filename': 'app/logs/request.log',
+            'formatter': 'standard',
+            'filename': os.path.join(config.Config.LOG_DIR, 'request.log'),
             'maxBytes': 10000000,
             'backupCount': 5,
         },
         'file.handler.errors': {
             'class': 'logging.handlers.RotatingFileHandler',
             'formatter': 'standard',
-            'filename': 'app/logs/errors.log',
-            'maxBytes': 10000000,
-            'backupCount': 5,
-        },
-        'file.handler.debug': {
-            'class': 'logging.handlers.RotatingFileHandler',
-            'formatter': 'standard',
-            'filename': 'app/logs/debug.log',
+            'filename': os.path.join(config.Config.LOG_DIR, 'errors.log'),
             'maxBytes': 10000000,
             'backupCount': 5,
         },
         'file.handler.sqlalchemy': {
             'class': 'logging.handlers.RotatingFileHandler',
             'formatter': 'standard',
-            'filename': 'app/logs/sqlalchemy.log',
+            'filename': os.path.join(config.Config.LOG_DIR, 'sqlalchemy.log'),
             'maxBytes': 10000000,
             'backupCount': 5,
         },
         'file.handler.werkzeug': {
             'class': 'logging.handlers.RotatingFileHandler',
             'formatter': 'standard',
-            'filename': 'app/logs/werkzeug.log',
+            'filename': os.path.join(config.Config.LOG_DIR, 'werkzeug.log'),
             'maxBytes': 10000000,
             'backupCount': 5,
         },
@@ -159,11 +147,6 @@ LOGGING_CONFIG = {
         },
         'request': {  # if __name__ == '__main__'
             'handlers': ['file.handler.request'],
-            'level': 'DEBUG',
-            'propagate': False
-        },
-        'debug': {  # if __name__ == '__main__'
-            'handlers': ['file.handler.debug'],
             'level': 'DEBUG',
             'propagate': False
         }

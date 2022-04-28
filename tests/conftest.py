@@ -7,7 +7,7 @@ import pytest
 from app import create_app, User
 from app.db import db
 
-# this is a good tutorial I used to fix this code to do datbase testing.
+# this is a good tutorial I used to fix this code to do daatbase testing.
 # https://xvrdm.github.io/2017/07/03/testing-flask-sqlalchemy-database-with-pytest/
 
 
@@ -16,7 +16,7 @@ def application():
     """This makes the app"""
     # you need this one if you want to see what's in the database
     # os.environ['FLASK_ENV'] = 'development'
-    # you need to run it in testing to pass on GitHub
+    # you need to run it in testing to pass on github
     os.environ['FLASK_ENV'] = 'testing'
 
     application = create_app()
@@ -26,7 +26,18 @@ def application():
         yield application
         db.session.remove()
         # drops the database tables after the test runs
-        db.drop_all()
+        # db.drop_all()
+
+
+@pytest.fixture()
+def add_user(application):
+    with application.app_context():
+        # new record
+        user = User('keith@webizly.com', 'testtest')
+        db.session.add(user)
+        db.session.commit()
+
+
 
 
 @pytest.fixture()
