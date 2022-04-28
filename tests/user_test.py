@@ -1,17 +1,15 @@
+import logging
+
 from app import db
 from app.db.models import User, Song
 from faker import Faker
 
 
 def test_adding_user(application):
-    Faker.seed(4321)
-    fake = Faker()
-    for _ in range(10):
-        print(fake.email())
-
+    log = logging.getLogger("myApp")
     with application.app_context():
-        assert db.session.query(User).count() == 0
-        assert db.session.query(Song).count() == 0
+        user_og_count = db.session.query(User).count()
+        song_og_count = db.session.query(Song).count()
         # showing how to add a record
         # create a record
         user = User('keith@webizly.com', 'testtest')
@@ -20,16 +18,17 @@ def test_adding_user(application):
         # call the commit
         db.session.commit()
         # assert that we now have a new user
-        assert db.session.query(User).count() == 1
+        assert db.session.query(User).count() == user_og_count + 1
         # finding one user record by email
         user = User.query.filter_by(email='keith@webizly.com').first()
+        log.info(user)
         # asserting that the user retrieved is correct
         assert user.email == 'keith@webizly.com'
         # this is how you get a related record ready for insert
         user.songs = [Song("test", "smap"), Song("test2", "te")]
         # commit is what saves the songs
         db.session.commit()
-        assert db.session.query(Song).count() == 2
+        assert db.session.query(Song).count() == song_og_count + 2
         song1 = Song.query.filter_by(title='test').first()
         assert song1.title == "test"
         # changing the title of the song
@@ -40,5 +39,5 @@ def test_adding_user(application):
         assert song2.title == "SuperSongTitle"
         # checking cascade delete
         db.session.delete(user)
-        assert db.session.query(User).count() == 0
-        assert db.session.query(Song).count() == 0
+        assert db.session.query(User).count() == user_og_count
+        assert db.session.query(Song).count() == song_og_count
