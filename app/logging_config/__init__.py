@@ -5,7 +5,7 @@ from logging.config import dictConfig
 import flask
 from flask import request, current_app
 
-from app.logging_config.log_formatters import RequestFormatter
+# from app.logging_config.log_formatters import RequestFormatter
 from app import config
 
 log_con = flask.Blueprint('log_con', __name__)
@@ -74,54 +74,54 @@ LOGGING_CONFIG = {
         'file.handler': {
             'class': 'logging.handlers.RotatingFileHandler',
             'formatter': 'standard',
-            'filename': os.path.join(config.Config.LOG_DIR, 'handler.log'),
+            'filename': os.path.join(config.Config.LOG_DIR,'handler.log'),
             'maxBytes': 10000000,
             'backupCount': 5,
         },
         'file.handler.myapp': {
             'class': 'logging.handlers.RotatingFileHandler',
             'formatter': 'standard',
-            'filename': os.path.join(config.Config.LOG_DIR, 'myapp.log'),
+            'filename': os.path.join(config.Config.LOG_DIR,'myapp.log'),
             'maxBytes': 10000000,
             'backupCount': 5,
         },
         'file.handler.request': {
             'class': 'logging.handlers.RotatingFileHandler',
             'formatter': 'standard',
-            'filename': os.path.join(config.Config.LOG_DIR, 'request.log'),
+            'filename': os.path.join(config.Config.LOG_DIR,'request.log'),
             'maxBytes': 10000000,
             'backupCount': 5,
         },
         'file.handler.errors': {
             'class': 'logging.handlers.RotatingFileHandler',
             'formatter': 'standard',
-            'filename': os.path.join(config.Config.LOG_DIR, 'errors.log'),
+            'filename': os.path.join(config.Config.LOG_DIR,'errors.log'),
             'maxBytes': 10000000,
             'backupCount': 5,
         },
         'file.handler.sqlalchemy': {
             'class': 'logging.handlers.RotatingFileHandler',
             'formatter': 'standard',
-            'filename': os.path.join(config.Config.LOG_DIR, 'sqlalchemy.log'),
+            'filename': os.path.join(config.Config.LOG_DIR,'sqlalchemy.log'),
             'maxBytes': 10000000,
             'backupCount': 5,
         },
         'file.handler.werkzeug': {
             'class': 'logging.handlers.RotatingFileHandler',
             'formatter': 'standard',
-            'filename': os.path.join(config.Config.LOG_DIR, 'werkzeug.log'),
+            'filename': os.path.join(config.Config.LOG_DIR,'werkzeug.log'),
             'maxBytes': 10000000,
             'backupCount': 5,
         },
     },
     'loggers': {
         '': {  # root logger
-            'handlers': ['default', 'file.handler'],
+            'handlers': ['default','file.handler'],
             'level': 'DEBUG',
             'propagate': True
         },
         '__main__': {  # if __name__ == '__main__'
-            'handlers': ['default', 'file.handler'],
+            'handlers': ['default','file.handler'],
             'level': 'DEBUG',
             'propagate': True
         },
