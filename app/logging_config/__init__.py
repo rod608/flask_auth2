@@ -116,12 +116,12 @@ LOGGING_CONFIG = {
     },
     'loggers': {
         '': {  # root logger
-            'handlers': ['default','file.handler'],
+            'handlers': ['default', 'file.handler'],
             'level': 'DEBUG',
             'propagate': True
         },
         '__main__': {  # if __name__ == '__main__'
-            'handlers': ['default','file.handler'],
+            'handlers': ['default', 'file.handler'],
             'level': 'DEBUG',
             'propagate': True
         },
