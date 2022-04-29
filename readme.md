@@ -9,6 +9,18 @@
 
 * [Developmental Deployment](https://ren9-p2-dev.herokuapp.com/)
 
+# Project 3 Notes: 
+Requirement #1: "Your project must have a log file with an entry for each time a user uploads a CSV playlist."
+1. Embedded within songs_upload() function within the songs/dunderinit. The log file is myApp.log.
+
+Requirement #2: "There must be a test to verify that the CSV file is uploaded and processed."
+1. A portion of the test_csv_verification() test method in tests/csv_verification_test accomplishes this.
+
+Requirement #3: "You must create a database record that is related to the user record for each song in the playlist.  You only need to store the song's title, artist, year, and genre."
+1. Found in the Song class within db/models/dunderinit. All four requested properties for the Song-related datatable are included.
+
+Requirement #4: "You must have a test for login, a test for registration, a test for accessing the dashboard as a logged-in user, and a test for denying access to the dashboard, and denying access to uploading the CSV file"
+
 
 ## Running Locally
 
