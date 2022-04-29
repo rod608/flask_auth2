@@ -17,7 +17,7 @@ Requirement #2: "There must be a test to verify that the CSV file is uploaded an
    - A portion of the test_csv_verification() test method in tests/csv_verification_test accomplishes this.
 
 Requirement #3: "You must create a database record that is related to the user record for each song in the playlist.  You only need to store the song's title, artist, year, and genre."
-   - Found in the Song class within db/models/dunderinit. All four requested properties for the Song-related datatable are included.
+   - COMPLETED | Found in the Song class within db/models/dunderinit. All four requested properties for the Song-related datatable are included.
 
 Requirement #4: "You must have a test for login, a test for registration, a test for accessing the dashboard as a logged-in user, and a test for denying access to the dashboard, and denying access to uploading the CSV file"
    - All can be found within tests/user_test in their associated functions and are in order following the test_adding_user() method.
