@@ -1,11 +1,12 @@
 import logging
 import os
+import datetime
 from logging.config import dictConfig
 
 import flask
 from flask import request, current_app
 
-# from app.logging_config.log_formatters import RequestFormatter
+from app.logging_config.log_formatters import RequestFormatter
 from app import config
 
 log_con = flask.Blueprint('log_con', __name__)
@@ -30,10 +31,7 @@ def before_request_logging():
     current_app.logger.info("Before Request")
 
     log = logging.getLogger("request")
-    log.info("Before Request")
-
-    log2 = logging.getLogger("myerrors")
-    log2.info("Debug-level log function reached: myerrors logger activated. ")
+    log.info(f"Before Request at {datetime.datetime.now()}")
 
 
 @log_con.after_app_request
@@ -43,15 +41,15 @@ def after_request_logging(response):
     log = logging.getLogger("request")
 
     if request.path == '/favicon.ico':
-        log.info("After Favicon Request")
+        log.info(f"After Favicon Request at {datetime.datetime.now()}")
         return response
     elif request.path.startswith('/static'):
-        log.info("After Static Request")
+        log.info(f"After Static Request at {datetime.datetime.now()}")
         return response
     elif request.path.startswith('/bootstrap'):
-        log.info("After Bootstrap Request")
+        log.info(f"After Bootstrap Request at {datetime.datetime.now()}")
         return response
-    log.info("After General Request")
+    log.info(f"After General Request at {datetime.datetime.now()}")
     return response
 
 
@@ -62,7 +60,11 @@ LOGGING_CONFIG = {
         'standard': {
             'format': '%(asctime)s [%(levelname)s] %(name)s: %(message)s'
         },
-
+        'RequestFormatter': {
+            '()': 'app.logging_config.log_formatters.RequestFormatter',
+            'format': '[%(asctime)s] [%(process)d] %(remote_addr)s requested %(url)s'
+                      '%(levelname)s method = %(request_method)s w/ msg: %(message)s in module %(module)s'
+        }
     },
     'handlers': {
         'default': {
@@ -74,42 +76,42 @@ LOGGING_CONFIG = {
         'file.handler': {
             'class': 'logging.handlers.RotatingFileHandler',
             'formatter': 'standard',
-            'filename': os.path.join(config.Config.LOG_DIR,'handler.log'),
+            'filename': os.path.join(config.Config.LOG_DIR, 'handler.log'),
             'maxBytes': 10000000,
             'backupCount': 5,
         },
         'file.handler.myapp': {
             'class': 'logging.handlers.RotatingFileHandler',
             'formatter': 'standard',
-            'filename': os.path.join(config.Config.LOG_DIR,'myapp.log'),
+            'filename': os.path.join(config.Config.LOG_DIR, 'myapp.log'),
             'maxBytes': 10000000,
             'backupCount': 5,
         },
         'file.handler.request': {
             'class': 'logging.handlers.RotatingFileHandler',
-            'formatter': 'standard',
-            'filename': os.path.join(config.Config.LOG_DIR,'request.log'),
+            'formatter': 'RequestFormatter',
+            'filename': os.path.join(config.Config.LOG_DIR, 'request.log'),
             'maxBytes': 10000000,
             'backupCount': 5,
         },
         'file.handler.errors': {
             'class': 'logging.handlers.RotatingFileHandler',
             'formatter': 'standard',
-            'filename': os.path.join(config.Config.LOG_DIR,'errors.log'),
+            'filename': os.path.join(config.Config.LOG_DIR, 'errors.log'),
             'maxBytes': 10000000,
             'backupCount': 5,
         },
         'file.handler.sqlalchemy': {
             'class': 'logging.handlers.RotatingFileHandler',
             'formatter': 'standard',
-            'filename': os.path.join(config.Config.LOG_DIR,'sqlalchemy.log'),
+            'filename': os.path.join(config.Config.LOG_DIR, 'sqlalchemy.log'),
             'maxBytes': 10000000,
             'backupCount': 5,
         },
         'file.handler.werkzeug': {
             'class': 'logging.handlers.RotatingFileHandler',
             'formatter': 'standard',
-            'filename': os.path.join(config.Config.LOG_DIR,'werkzeug.log'),
+            'filename': os.path.join(config.Config.LOG_DIR, 'werkzeug.log'),
             'maxBytes': 10000000,
             'backupCount': 5,
         },
