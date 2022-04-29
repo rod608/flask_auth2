@@ -1,10 +1,12 @@
+import functools
 import logging
 
-from flask import url_for
+from flask.testing import FlaskClient
+from flask_login import login_user
 
 from app import db, auth
-from flask_login import login_required, current_user
 from app.db.models import User, Song
+import pytest
 from faker import Faker
 
 
@@ -68,7 +70,8 @@ def test_registration(application):
 
 # To-Do
 def test_dashboard_access_logged_in(client):
-    print("HI")
+    response = client.get("/dashboard")
+    assert b"<h1>Redirecting...</h1>" in response.data
 
 
 # Complete

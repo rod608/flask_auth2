@@ -2,10 +2,11 @@ import csv
 import logging
 import os
 
-from flask import Blueprint, render_template, abort, url_for,current_app
+from flask import Blueprint, render_template, abort, url_for, current_app
 from flask_login import current_user, login_required
 from jinja2 import TemplateNotFound
 
+from app.auth import register
 from app.db import db
 from app.db.models import Song
 from app.songs.forms import csv_upload
@@ -45,13 +46,16 @@ def songs_upload():
 
         current_user.songs = list_of_songs
 
-        # Project Requirement: log file with an entry for each time a user uploads a CSV playlist.
+        ''' Project Requirement: log file with an entry for each time a user uploads a CSV playlist. '''
         log = logging.getLogger("myApp")
         user = current_user
         current_app.logger.info(f"\t-- {len(current_user.songs)} Song(s) Uploaded by {user}. Check myApp.log --")
         log.info(f"\t-- {len(current_user.songs)} Song(s) Uploaded by current user {user} --")
 
         db.session.commit()
+        ''' Project Requirement: Verify that the CSV file is uploaded and processed '''
+
+
         return redirect(url_for('songs.songs_browse'))
 
     try:

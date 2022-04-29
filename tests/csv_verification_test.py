@@ -1,9 +1,12 @@
 import logging
 
 import os
+
+from flask_login import current_user
+
 from app import db
 from app.db.models import User, Song
-from app.songs import songs_upload
+from app.songs import songs, songs_upload
 from faker import Faker
 
 
