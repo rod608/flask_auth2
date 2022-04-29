@@ -13,8 +13,8 @@ from app.songs.forms import csv_upload
 from werkzeug.utils import secure_filename, redirect
 from flask import Response
 
-map = Blueprint('map', __name__,
-                        template_folder='templates')
+map = Blueprint('map', __name__, template_folder='templates')
+
 
 @map.route('/locations', methods=['GET'], defaults={"page": 1})
 @map.route('/locations/<int:page>', methods=['GET'])
@@ -24,19 +24,20 @@ def browse_locations(page):
     pagination = Location.query.paginate(page, per_page, error_out=False)
     data = pagination.items
     try:
-        return render_template('browse_locations.html',data=data,pagination=pagination)
+        return render_template('browse_locations.html', data=data, pagination=pagination)
     except TemplateNotFound:
         abort(404)
 
+
 @map.route('/locations_datatables/', methods=['GET'])
 def browse_locations_datatables():
-
     data = Location.query.all()
 
     try:
         return render_template('browse_locations_datatables.html',data=data)
     except TemplateNotFound:
         abort(404)
+
 
 @map.route('/api/locations/', methods=['GET'])
 def api_locations():
@@ -50,13 +51,10 @@ def api_locations():
 @map.route('/locations/map', methods=['GET'])
 def map_locations():
     google_api_key = current_app.config.get('GOOGLE_API_KEY')
-    log = logging.getLogger("myApp")
-    log.info(google_api_key)
     try:
-        return render_template('map_locations.html',google_api_key=google_api_key)
+        return render_template('map_locations.html', google_api_key=google_api_key)
     except TemplateNotFound:
         abort(404)
-
 
 
 @map.route('/locations/upload', methods=['POST', 'GET'])
@@ -70,8 +68,13 @@ def location_upload():
         list_of_locations = []
         with open(filepath) as file:
             csv_file = csv.DictReader(file)
+            list_of_locations = []
             for row in csv_file:
-                list_of_locations.append(Location(row['location'],row['longitude'],row['latitude'],row['population']))
+                location = Location.query.filter_by(title=row['location']).first()
+                if location is None:
+                    list_of_locations.append(Location(row['location'], row['longitude'], row['latitude'], row['population']))
+                else:
+                    location.users.append([location])
 
         current_user.locations = list_of_locations
         db.session.commit()
