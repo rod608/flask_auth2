@@ -7,6 +7,10 @@ from app.songs import songs_upload
 from faker import Faker
 
 
+def song_csv_upload(application):
+    print("hi")
+
+
 def test_csv_verification(application):
     with application.app_context():
         ''' Adding a user to perform these tests on. '''
@@ -29,11 +33,11 @@ def test_csv_verification(application):
         music_csv = os.path.join(root, '../sample_csv/music.csv')
         assert os.path.exists(music_csv)
 
-        # Step 2: Upload the CSV as the current user
+        # Step 2: Upload a CSV as the current user
 
-        # Step 3: Make use of
+        # Step 3: Make use of songs_upload() function
 
-        ''' End: We're done so cascade delete on user ; we don't need him anymore 🤣 '''
+        ''' End: We're done so cascade delete on user ; we don't need him anymore '''
         db.session.delete(user)
         assert db.session.query(User).count() == user_original_count
         assert db.session.query(Song).count() == song_original_count
