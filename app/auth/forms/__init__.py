@@ -4,7 +4,6 @@ from wtforms.fields import *
 
 
 # Project #1: Write a test for csv_upload()
-
 class login_form(FlaskForm):
     email = EmailField('Email Address', [
         validators.DataRequired(),

@@ -22,7 +22,7 @@ def songs_browse(page):
     pagination = Song.query.paginate(page, per_page, error_out=False)
     data = pagination.items
     try:
-        return render_template('browse_songs.html',data=data,pagination=pagination)
+        return render_template('browse_songs.html', data=data, pagination=pagination)
     except TemplateNotFound:
         abort(404)
 
@@ -32,12 +32,11 @@ def songs_browse(page):
 def songs_upload():
     form = csv_upload()
     if form.validate_on_submit():
-        log = logging.getLogger("myApp")
-
         filename = secure_filename(form.file.data.filename)
         filepath = os.path.join(current_app.config['UPLOAD_FOLDER'], filename)
+
         form.file.data.save(filepath)
-        # user = current_user
+
         list_of_songs = []
         with open(filepath) as file:
             csv_file = csv.DictReader(file)
@@ -45,8 +44,14 @@ def songs_upload():
                 list_of_songs.append(Song(row['Name'],row['Artist'],row['Genre']))
 
         current_user.songs = list_of_songs
-        db.session.commit()
 
+        # Project Requirement: log file with an entry for each time a user uploads a CSV playlist.
+        log = logging.getLogger("myApp")
+        user = current_user
+        current_app.logger.info(f"\t-- {len(current_user.songs)} Song(s) Uploaded by {user}. Check myApp.log --")
+        log.info(f"\t-- {len(current_user.songs)} Song(s) Uploaded by current user {user} --")
+
+        db.session.commit()
         return redirect(url_for('songs.songs_browse'))
 
     try:
