@@ -20,7 +20,7 @@ Requirement #3: "You must create a database record that is related to the user r
    - COMPLETED | Found in the Song class within db/models/dunderinit. All four requested properties for the Song-related datatable are included.
 
 Requirement #4: "You must have a test for login, a test for registration, a test for accessing the dashboard as a logged-in user, and a test for denying access to the dashboard, and denying access to uploading the CSV file"
-   - All can be found within tests/user_test in their associated functions and are in order following the test_adding_user() method.
+   - These tests can be found in tests/user_access_test.py
 
 Requirement #5: "Write a log message for each request and response that records the method, route, time, request address."
    - COMPLETED | Done by making use of RequestFormatter within logging_config's dunderinit. Check out the request logger.
