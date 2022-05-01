@@ -1,5 +1,7 @@
-from flask import session
+from app import db
 from app.auth.forms import *
+from flask_login import FlaskLoginClient
+from app.db.models import User, Song
 
 
 def test_login_validates(application, client):
@@ -34,3 +36,31 @@ def test_register_not_validates(application, client):
     form.password.data = "jimmy1941"
     form.confirm.data = "jimmy1942"
     assert not form.validate()
+
+
+def test_dashboard_access_granted(application, client, add_user):
+    """ Tests granted access to the dashboard with a user logged in. """
+    application.test_client_class = FlaskLoginClient
+    user = User.query.get(1)
+
+    assert db.session.query(User).count() == 1
+    assert user.email == 'keith@webizly.com'
+
+    with application.test_client(user=user) as client:
+        # This request already has a user logged in.
+        response = client.get('/dashboard')
+        assert b'keith@webizly.com' in response.data
+        assert response.status_code == 200
+
+
+def test_dashboard_access_denied(application, client):
+    """ Tests denied access to the dashboard as a user isn't logged in. """
+    application.test_client_class = FlaskLoginClient
+    assert db.session.query(User).count() == 0
+
+    with application.test_client(user=None) as client:
+        # This request does NOT have a user logged in.
+        response = client.get('/dashboard')
+        assert response.status_code != 200
+        assert response.status_code == 302
+
