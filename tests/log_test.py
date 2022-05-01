@@ -9,7 +9,7 @@ def test_request_log_exists():
     # Make if it doesn't exist
     if not os.path.exists(requestlog):
         open(requestlog, 'a').close()
-    # Asser it exists
+    # Assert it exists
     assert os.path.exists(requestlog)
 
 

@@ -1,17 +1,10 @@
-import functools
-import logging
-
-from flask.testing import FlaskClient
-from flask_login import login_user
-
-from app import db, auth
+from app import db
 from app.db.models import User, Song
-import pytest
-from faker import Faker
 
 
 def test_adding_user(application):
     with application.app_context():
+        # assert db.session.query(User).count() == 0
         user_count = db.session.query(User).count()
         song_count = db.session.query(Song).count()
         # showing how to add a record
@@ -44,56 +37,3 @@ def test_adding_user(application):
         db.session.delete(user)
         assert db.session.query(User).count() == user_count
         assert db.session.query(Song).count() == song_count
-
-
-# To-Do
-def test_login(application, client):
-    with client:
-        user = User('keith@webizly.com', 'testtest', True)
-        # add it to get ready to be committed
-        db.session.add(user)
-        # call the commit
-        db.session.commit()
-        current_user = user
-
-        # assert current_user is None
-        # assert current_user.id is 5
-        response = client.get("/login")
-        assert response.status_code == 200
-        print("Hi")
-
-
-# To-Do
-def test_registration(application):
-    print("Hi")
-
-
-# To-Do
-def test_dashboard_access_logged_in(client):
-    response = client.get("/dashboard")
-    assert b"<h1>Redirecting...</h1>" in response.data
-
-
-# Complete
-def test_dashboard_access_logged_out(client):
-    db.session.query(User).count() == 0
-    with client:
-        response = client.get("/dashboard")
-        assert b"<h1>Redirecting...</h1>" in response.data
-
-
-# To-Do
-def test_deny_access_csv(client):
-    with client:
-        response = client.get("/songs")
-        assert response.status_code == 200
-
-
-# def test_dashboard_permissions(client, application):
-#     with client:
-#         client.post('/login', follow_redirects=True)
-#         db.drop_all()
-#         with application.app_context():
-#             response = client.get("/dashboard")
-#             assert response.status_code == 200
-
