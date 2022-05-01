@@ -1,8 +1,4 @@
-# project/tests/test_config.py
-import logging
-import os
-
-import app.config
+# Rodney's Code
 
 
 def test_development_config(application):

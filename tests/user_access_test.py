@@ -1,7 +1,7 @@
 from app import db
 from app.auth.forms import *
 from flask_login import FlaskLoginClient
-from app.db.models import User, Song
+from app.db.models import User
 
 
 def test_login_validates(application, client):
@@ -64,3 +64,28 @@ def test_dashboard_access_denied(application, client):
         assert response.status_code != 200
         assert response.status_code == 302
 
+
+def test_csv_upload_granted(application, client, add_user):
+    """ Test that verifies that uploading CSV files is allowed for users. """
+    application.test_client_class = FlaskLoginClient
+    user = User.query.get(1)
+
+    assert db.session.query(User).count() == 1
+    assert user.email == 'keith@webizly.com'
+
+    with application.test_client(user=user) as client:
+        # This request has a user logged in.
+        response = client.get('/songs/upload')
+        assert response.status_code == 200
+
+
+def test_csv_upload_denied(application, client):
+    """ Test that verifies that uploading CSV files is denied for non-users """
+    application.test_client_class = FlaskLoginClient
+    assert db.session.query(User).count() == 0
+
+    with application.test_client(user=None) as client:
+        # This request has a user logged in.
+        response = client.get('/songs/upload')
+        assert response.status_code != 200
+        assert response.status_code == 302

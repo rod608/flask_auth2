@@ -14,7 +14,7 @@ Requirement #1: "Your project must have a log file with an entry for each time a
    - COMPLETED | Embedded within songs_upload() function within the songs/dunderinit. The log file is myApp.log.
 
 Requirement #2: "There must be a test to verify that the CSV file is uploaded and processed."
-   - A portion of the test_csv_verification() test method in tests/csv_verification_test accomplishes this.
+   - COMPLETED| Check tests/csv_verification_test.py
 
 Requirement #3: "You must create a database record that is related to the user record for each song in the playlist.  You only need to store the song's title, artist, year, and genre."
    - COMPLETED | Found in the Song class within db/models/dunderinit. All four requested properties for the Song-related datatable are included.
@@ -23,7 +23,7 @@ Requirement #4: "You must have a test for login, a test for registration, a test
    - COMPLETED | These tests can be found in tests/user_access_test.py
 
 Requirement #5: "Write a log message for each request and response that records the method, route, time, request address."
-   - COMPLETED | Done by making use of RequestFormatter within logging_config's dunderinit. Check out the request logger.
+   - COMPLETED | Done by making use of RequestFormatter within logging_config's dunderinit. Check out the request logger before/after making requests.
 
 
 ## Running Locally
