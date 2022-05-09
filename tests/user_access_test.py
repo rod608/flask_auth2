@@ -4,6 +4,7 @@ from flask_login import FlaskLoginClient
 from app.db.models import User
 
 
+# Login
 def test_login_validates(application, client):
     """ Tests login w/ proper credentials. """
     form = login_form()
