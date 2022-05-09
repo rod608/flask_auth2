@@ -23,7 +23,7 @@ def test_csv_upload_and_verification(application, client, add_user):
         response = client.get('/songs/upload')
         assert response.status_code == 200
 
-        # Checking to see that csv submits and validates
+        # Checking to see that csv submits and validates.
         root = os.path.dirname(os.path.abspath(__file__))
         music_csv = os.path.join(root, '../sample_csv/music.csv')
         music_csv_data = open(music_csv, 'rb')
