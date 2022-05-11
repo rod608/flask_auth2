@@ -1,8 +1,0 @@
-[2022-04-05 17:35:25,218] 172.20.0.1 requested http://localhost/
-INFO in __init__: method: GET,  path: /,  status: 200,  duration: 0.12,  time: 2022-04-05T17:35:25Z,  ip: 172.20.0.1,  host: localhost,  params: {}, 
-[2022-04-05 17:36:28,628] 172.20.0.1 requested http://localhost/welcome
-INFO in __init__: method: GET,  path: /welcome,  status: 200,  duration: 0.03,  time: 2022-04-05T17:36:28Z,  ip: 172.20.0.1,  host: localhost,  params: {}, 
-[2022-04-05 17:36:29,096] 172.20.0.1 requested http://localhost/about
-INFO in __init__: method: GET,  path: /about,  status: 200,  duration: 0.03,  time: 2022-04-05T17:36:29Z,  ip: 172.20.0.1,  host: localhost,  params: {}, 
-[2022-04-05 17:36:29,584] 172.20.0.1 requested http://localhost/dashboard
-INFO in __init__: method: GET,  path: /dashboard,  status: 200,  duration: 0.03,  time: 2022-04-05T17:36:29Z,  ip: 172.20.0.1,  host: localhost,  params: {}, 
