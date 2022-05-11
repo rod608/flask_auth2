@@ -90,17 +90,11 @@ def logout():
 def dashboard(page):
     page = page
     per_page = 1000
-    # pagination = Location.query.filter_by(users=current_user.id).paginate(page, per_page, error_out=False)
-    # pagination = Location.query.all(users=current_user.id).paginate(page, per_page, error_out=False)
-
-    # pagination = db.session.query(Location, User).filter(location_user.location_id == Location.id,
-    # location_user.user_id == User.id).order_by(Location.location_id).all()
-    # pagination = User.query.join(location_user).filter(location_user.user_id == current_user.id).paginate()
-
-    data = Location.query.all()
+    pagination = Transactions.query.paginate(page, per_page, error_out=False)
+    data = pagination.items
 
     try:
-        return render_template('dashboard.html', data=data)
+        return render_template('dashboard.html', data=data, pagination=pagination)
     except TemplateNotFound:
         abort(404)
 
