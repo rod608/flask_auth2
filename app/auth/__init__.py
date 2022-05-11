@@ -1,6 +1,6 @@
 import logging
 
-# Project 3: Fix mail, Check out that pagination section
+# Project 3: Fix mail, Check out that pagination section!
 
 from flask import Blueprint, render_template, redirect, url_for, flash, current_app, abort
 from flask_login import login_user, login_required, logout_user, current_user
